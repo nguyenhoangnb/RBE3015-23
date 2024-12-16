@@ -54,6 +54,7 @@ class APP(QMainWindow):
         #set  self.mainHandle.lbl_number.setText() the number of the compoment in the board
         pass
 
+
     def show_bbox_compoment(self):
         # Draw in frame the bbox of the compoment in the board
         pass
