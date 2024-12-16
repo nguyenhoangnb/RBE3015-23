@@ -1,6 +1,6 @@
 import sys
 import cv2
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPixmap, QImage
 from appHandle import appHandle
@@ -30,11 +30,24 @@ class APP(QMainWindow):
             print("Cannot read camera")
             return
 
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        height, width = frame.shape
-        bytesPerLine = width
-        qimage = QImage(frame.data, width, height, bytesPerLine, QImage.Format_Grayscale8)
+        frame = cv2.flip(frame, 1)
+
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+
+        height, width, channel = frame.shape
+        bytesPerLine = channel * width
+
+        qimage = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
+
         pixmap = QPixmap.fromImage(qimage)
+        pixmap = pixmap.scaled(
+            self.mainHandle.Image_stream.width(),
+            self.mainHandle.Image_stream.height(),
+            Qt.KeepAspectRatio
+        )
+
         self.mainHandle.Image_stream.setPixmap(pixmap)
 
     def show_number_compoment(self):
